@@ -2,7 +2,7 @@
 
 ---
 
-<img align="right" alt="Profile Gif" src="https://github.com/pingshunhuangalex/pingshunhuangalex/blob/master/coding-and-building.gif?raw=true" width="400" height="300" />
+<img align="right" alt="Profile Gif" src="https://github.com/pingshunhuangalex/pingshunhuangalex/blob/main/assets/coding-and-building.gif?raw=true" width="400" height="300" />
 
 I'm [Pingshun Huang (Alex)](https://www.linkedin.com/in/pingshunhuangalex/), a creative and passionate frontend web developer and technology innovation professional with a great eye for design and interaction across all devices.
 
@@ -12,41 +12,39 @@ Proven ability to combine vision, creativity and strong business acumen with wel
 
 **💻 Bread and Butter**
 
-<p align="center">
-  <code>
-    <img alt="TypeScript" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png">
-  </code>
-  <code>
-    <img alt="JavaScript" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png">
-  </code>
-  <code>
-    <img alt="HTML" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png">
-  </code>
-  <code>
-    <img alt="SASS" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sass/sass.png">
-  </code>
-  <code>
-    <img alt="CSS" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png">
-  </code>
-  <code>
-    <img alt="React" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png">
-  </code>
-  <code>
-    <img alt="Vue" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/vue/vue.png">
-  </code>
-  <code>
-    <img alt="GraphQL" height="20" src="https://raw.githubusercontent.com/github/explore/5c058a388828bb5fde0bcafd4bc867b5bb3f26f3/topics/graphql/graphql.png">
-  </code>
-  <code>
-    <img alt="Node" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nodejs/nodejs.png">
-  </code>
-  <code>
-    <img alt="Python" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png">
-  </code>
-  <code>
-    <img alt="Git" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png">
-  </code>
-</p>
+<code>
+  <img alt="TypeScript" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png">
+</code>
+<code>
+  <img alt="JavaScript" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png">
+</code>
+<code>
+  <img alt="HTML" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png">
+</code>
+<code>
+  <img alt="SASS" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sass/sass.png">
+</code>
+<code>
+  <img alt="CSS" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png">
+</code>
+<code>
+  <img alt="React" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png">
+</code>
+<code>
+  <img alt="Vue" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/vue/vue.png">
+</code>
+<code>
+  <img alt="GraphQL" height="20" src="https://raw.githubusercontent.com/github/explore/5c058a388828bb5fde0bcafd4bc867b5bb3f26f3/topics/graphql/graphql.png">
+</code>
+<code>
+  <img alt="Node" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nodejs/nodejs.png">
+</code>
+<code>
+  <img alt="Python" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png">
+</code>
+<code>
+  <img alt="Git" height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png">
+</code>
 
 **⚙️ Previously in GitHub**
 
