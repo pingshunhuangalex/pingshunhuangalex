@@ -41,6 +41,4 @@ Proven ability to combine vision, creativity and strong business acumen with wel
 <p align="right">
   <a href="mailto:alex.g.huang@gmail.com"><img alt="Gmail" src="https://img.shields.io/badge/gmail-%23D14836.svg?&style=for-the-badge&logo=gmail&logoColor=white" /></a>
   <a href="https://www.linkedin.com/in/pingshunhuangalex/"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white" /></a>
-  <a href="https://twitter.com/pingshunhuang"><img alt="Twitter" src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white" /></a>
-  <img alt="Visitor Counter" src="https://visitor-badge.glitch.me/badge?page_id=pingshunhuangalex.pingshunhuangalex" />
 </p>
