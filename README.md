@@ -1,8 +1,6 @@
-### Hi there <img alt="Greeting Gif" src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px"> Come to check my profile again? Make yourself at home 😘
+## Hi there <img alt="Greeting Gif" src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px"> Come to check my profile again? Make yourself at home 😘
 
----
-
-<img align="right" alt="Profile Gif" src="https://github.com/pingshunhuangalex/pingshunhuangalex/blob/main/assets/coding-and-building.gif?raw=true" width="400" height="300">
+<img align="right" alt="Illustration" src="https://github.com/pingshunhuangalex/pingshunhuangalex/blob/main/assets/coding-and-building.png" height="275">
 
 I'm [Pingshun Huang (Alex)](https://www.linkedin.com/in/pingshunhuangalex/), a creative and passionate frontend web developer and technology innovation professional with a great eye for design and interaction across all devices.
 
