@@ -1,4 +1,4 @@
-## Hi there <img alt="Greeting Gif" src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px"> Come to check my profile again? Make yourself at home 😘
+## Hi there 👋 Come to check my profile again? Make yourself at home 😘
 
 <img align="right" alt="Illustration" src="https://github.com/pingshunhuangalex/pingshunhuangalex/blob/main/assets/coding-and-building.png" height="275">
 
