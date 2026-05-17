@@ -1,6 +1,6 @@
 ## Hi there 👋 Come to check my profile again? Make yourself at home 😘
 
-<img align="right" alt="Illustration" src="https://github.com/pingshunhuangalex/pingshunhuangalex/blob/main/assets/coding-and-building.png" height="275">
+<img align="right" alt="Illustration" src="./assets/coding-and-building.png" height="275">
 
 I'm [Pingshun Huang (Alex)](https://www.linkedin.com/in/pingshunhuangalex/), a creative and passionate frontend web developer and technology innovation professional with a great eye for design and interaction across all devices.
 
@@ -27,11 +27,11 @@ Proven ability to combine vision, creativity and strong business acumen with wel
 **⚙️ Previously in GitHub**
 
 <p align="center">
-  <img alt="GitHub Stats" height="138px" src="https://github-readme-stats.vercel.app/api?username=pingshunhuangalex&hide_title=true&hide_border=true&show_icons=true&include_all_commits=true&count_private=true&line_height=22&theme=nightowl">
+  <img alt="GitHub Stats" height="138px" src="./assets/stats.svg">
 </p>
 <p align="center">
   <img alt="GitHub Streak" height="138px" src="https://github-readme-streak-stats.herokuapp.com/?user=pingshunhuangalex&hide_border=true&theme=nightowl">&nbsp;&nbsp;&nbsp;
-  <img alt="GitHub Top Langs" height="138px" src="https://github-readme-stats.vercel.app/api/top-langs/?username=pingshunhuangalex&hide=html&hide_title=true&hide_border=true&layout=compact&langs_count=8&theme=nightowl">&nbsp;&nbsp;&nbsp;
+  <img alt="GitHub Top Langs" height="138px" src="./assets/top-langs.svg">&nbsp;&nbsp;&nbsp;
 </p>
 
 ---
