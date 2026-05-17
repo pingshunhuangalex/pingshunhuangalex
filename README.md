@@ -27,16 +27,16 @@ Proven ability to combine vision, creativity and strong business acumen with wel
 **⚙️ Previously in GitHub**
 
 <p align="center">
-  <img alt="GitHub Stats" height="138px" src="./assets/stats.svg">
+  <img alt="GitHub Stats" height="140px" src="./assets/stats.svg">
 </p>
-<p align="center">
-  <img alt="GitHub Streak" height="138px" src="https://github-readme-streak-stats.herokuapp.com/?user=pingshunhuangalex&hide_border=true&theme=nightowl">&nbsp;&nbsp;&nbsp;
-  <img alt="GitHub Top Langs" height="138px" src="./assets/top-langs.svg">&nbsp;&nbsp;&nbsp;
+<p align="center" >
+  <img alt="GitHub Streak" height="140px" src="https://github-readme-streak-stats.herokuapp.com/?user=pingshunhuangalex&hide_border=true&theme=nightowl">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img alt="GitHub Top Langs" height="140px" src="./assets/top-langs.svg">
 </p>
 
 ---
 
 <p align="right">
-  <a href="mailto:alex.g.huang@gmail.com"><img alt="Gmail" src="https://img.shields.io/badge/gmail-%23D14836.svg?&style=for-the-badge&logo=gmail&logoColor=white"></a>
-  <a href="https://www.linkedin.com/in/pingshunhuangalex/"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"></a>
+  <a href="mailto:alex.g.huang@gmail.com"><img alt="Gmail" src="https://img.shields.io/badge/gmail-%23D14836.svg?&style=for-the-badge&logo=gmail&logoColor=white"></a>&nbsp;&nbsp;
+  <a href="https://www.linkedin.com/in/pingshunhuangalex/"><img alt="LinkedIn" src="https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"></a>
 </p>
