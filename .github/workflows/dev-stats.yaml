@@ -16,6 +16,7 @@ jobs:
               uses: actions/checkout@v6
               with:
                   token: ${{ secrets.SPHS_BOT_TOKEN }}
+                  fetch-depth: 0
 
             - name: Generate GitHub stats card
               uses: readme-tools/github-readme-stats-action@v1
@@ -37,9 +38,32 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.SPHS_BOT_TOKEN }}
               run: |
+                  BOT_EMAIL="107382682+sphs-bot@users.noreply.github.com"
+
                   git config user.name "SPHS [Bot]"
-                  git config user.email "107382682+sphs-bot@users.noreply.github.com"
+                  git config user.email "$BOT_EMAIL"
 
                   git add assets/*.svg
-                  git commit -m "Update dev stats cards" || exit 0
-                  git push
+
+                  if git diff --cached --quiet; then
+                      echo "🟡 No profile changes were found."
+                      echo "🟢 The existing dev stats cards are still valid. No changes were made."
+                      exit 0
+                  fi
+
+                  # Get the email of the last commit author
+                  LAST_COMMIT_EMAIL=$(git log -1 --format='%ae')
+
+                  if [ "$LAST_COMMIT_EMAIL" = "$BOT_EMAIL" ]; then
+                      echo "🟣 Last commit was pushed by the dev cards generation bot. Amending..."
+
+                      git commit --amend --no-edit
+                      git push --force-with-lease
+                  else
+                      echo "🟣 Last commit was pushed by a user. Creating a new commit..."
+
+                      git commit -m "Update dev stats cards" || exit 0
+                      git push
+                  fi
+
+                  echo "🟢 All dev stats cards updated and are now live!"
