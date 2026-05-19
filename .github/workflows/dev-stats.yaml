@@ -12,11 +12,42 @@ jobs:
             contents: write
 
         steps:
+            - name: Generate bot token
+              id: app-token
+              uses: actions/create-github-app-token@v3
+              with:
+                  client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
+                  private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
+
+            - name: Get bot ID
+              id: get-user-id
+              run: |
+                  # Fetch bot identity via token
+                  BOT_USER_ID=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq '.id')
+
+                  echo "bot-id=${BOT_USER_ID}" >> "$GITHUB_OUTPUT"
+                  echo "🟢 Bot ID ${BOT_USER_ID} is identified!"
+              env:
+                  GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
             - name: Checkout code
               uses: actions/checkout@v6
               with:
-                  token: ${{ secrets.SPHS_BOT_TOKEN }}
+                  token: ${{ steps.app-token.outputs.token }}
                   fetch-depth: 0
+
+            - name: Configure Git for bot
+              run: |
+                  # Set up Git for bot
+                  APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
+                  BOT_ID="${{ steps.get-user-id.outputs.bot-id }}"
+                  USER_NAME="${APP_SLUG}[bot]"
+                  USER_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+
+                  git config --global user.name "${USER_NAME}"
+                  git config --global user.email "${USER_EMAIL}"
+
+                  echo "🟢 Bot ${USER_NAME}<${USER_EMAIL}> is ready!"
 
             - name: Generate GitHub stats card
               uses: readme-tools/github-readme-stats-action@v1
@@ -24,7 +55,7 @@ jobs:
                   card: stats
                   options: username=${{ github.repository_owner }}&hide_title=true&hide_border=true&show_icons=true&rank_icon=github&include_all_commits=true&count_private=true&line_height=22&theme=nightowl
                   path: assets/stats.svg
-                  token: ${{ secrets.DEV_STATS_TOKEN }}
+                  token: ${{ steps.app-token.outputs.token }}
 
             - name: Generate GitHub top languages card
               uses: readme-tools/github-readme-stats-action@v1
@@ -32,18 +63,13 @@ jobs:
                   card: top-langs
                   options: username=${{ github.repository_owner }}&hide=html&hide_title=true&hide_border=true&layout=compact&langs_count=8&theme=nightowl
                   path: assets/top-langs.svg
-                  token: ${{ secrets.DEV_STATS_TOKEN }}
+                  token: ${{ steps.app-token.outputs.token }}
 
             - name: Update cards
               env:
-                  GITHUB_TOKEN: ${{ secrets.SPHS_BOT_TOKEN }}
+                  GH_TOKEN: ${{ steps.app-token.outputs.token }}
               run: |
                   # Dev stats cards generation via bot
-                  BOT_EMAIL="107382682+sphs-bot@users.noreply.github.com"
-
-                  git config user.name "SPHS [Bot]"
-                  git config user.email "$BOT_EMAIL"
-
                   git add assets/*.svg
 
                   if git diff --cached --quiet; then
