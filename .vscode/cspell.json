@@ -1,0 +1,11 @@
+{
+    "dictionaries": ["GitHub"],
+    "dictionaryDefinitions": [
+        {
+            "name": "GitHub",
+            "path": "./cspell/github.txt",
+            "addWords": true
+        }
+    ],
+    "import": ["~/.config/cspell.json"]
+}

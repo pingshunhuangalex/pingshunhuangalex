@@ -20,15 +20,15 @@ jobs:
                   private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
 
             - name: Get bot ID
-              id: get-user-id
-              run: |
-                  # Fetch bot identity via token
-                  BOT_USER_ID=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq '.id')
-
-                  echo "bot-id=${BOT_USER_ID}" >> "$GITHUB_OUTPUT"
-                  echo "🟢 Bot ID ${BOT_USER_ID} is identified!"
+              id: get-bot-id
               env:
                   GH_TOKEN: ${{ steps.app-token.outputs.token }}
+              run: |
+                  # Fetch bot identity via token
+                  BOT_ID=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq '.id')
+
+                  echo "bot-id=${BOT_ID}" >> "$GITHUB_OUTPUT"
+                  echo "🟢 Bot ID ${BOT_ID} is identified!"
 
             - name: Checkout code
               uses: actions/checkout@v6
@@ -37,17 +37,22 @@ jobs:
                   fetch-depth: 0
 
             - name: Configure Git for bot
+              id: config-bot
               run: |
                   # Set up Git for bot
                   APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
-                  BOT_ID="${{ steps.get-user-id.outputs.bot-id }}"
-                  USER_NAME="${APP_SLUG}[bot]"
-                  USER_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+                  BOT_ID="${{ steps.get-bot-id.outputs.bot-id }}"
 
-                  git config --global user.name "${USER_NAME}"
-                  git config --global user.email "${USER_EMAIL}"
+                  BOT_NAME="${APP_SLUG}[bot]"
+                  BOT_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
 
-                  echo "🟢 Bot ${USER_NAME}<${USER_EMAIL}> is ready!"
+                  echo "bot-name=${BOT_NAME}" >> "$GITHUB_OUTPUT"
+                  echo "bot-email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
+
+                  git config --global user.name "${BOT_NAME}"
+                  git config --global user.email "${BOT_EMAIL}"
+
+                  echo "🟢 Bot ${BOT_NAME}<${BOT_EMAIL}> is ready!"
 
             - name: Generate GitHub stats card
               uses: readme-tools/github-readme-stats-action@v1
@@ -65,32 +70,55 @@ jobs:
                   path: assets/top-langs.svg
                   token: ${{ steps.app-token.outputs.token }}
 
-            - name: Update cards
-              env:
-                  GH_TOKEN: ${{ steps.app-token.outputs.token }}
+            - name: Check cards
+              id: check-cards
               run: |
-                  # Dev stats cards generation via bot
+                  # Check dev stats cards availability
                   git add assets/*.svg
 
                   if git diff --cached --quiet; then
+                      git restore --staged .
+
                       echo "🟡 No profile changes were found."
+                      echo "skip=true" >> "$GITHUB_OUTPUT"
                       echo "🟢 The existing dev stats cards are still valid. No changes were made."
-                      exit 0
-                  fi
-
-                  # Get the email of the last commit author
-                  LAST_COMMIT_EMAIL=$(git log -1 --format='%ae')
-
-                  if [ "$LAST_COMMIT_EMAIL" = "$BOT_EMAIL" ]; then
-                      echo "🟣 Last commit was pushed by the dev cards generation bot. Amending..."
-
-                      git commit --amend --no-edit
-                      git push --force-with-lease
                   else
-                      echo "🟣 Last commit was pushed by a user. Creating a new commit..."
+                      git restore --staged .
 
-                      git commit -m "Update dev stats cards" || exit 0
-                      git push
+                      echo "skip=false" >> "$GITHUB_OUTPUT"
+                      echo "last-email=$(git log -1 --format='%ae')" >> "$GITHUB_OUTPUT" # Get the email of the last commit author
+
+                      if [ "${{ steps.check-cards.outputs.last-email }}" = "${{ steps.config-bot.outputs.bot-email }}" ]; then
+                          echo "🟣 Last commit was pushed by the dev cards generation bot. Amending..."
+                      else
+                          echo "🟣 Last commit was pushed by a user. Creating a new commit..."
+                      fi
                   fi
 
-                  echo "🟢 All dev stats cards updated and are now live!"
+            - name: Commit new cards
+              if: steps.check-cards.outputs.skip == 'false' && steps.check-cards.outputs.last-email != steps.config-bot.outputs.bot-email
+              uses: stefanzweifel/git-auto-commit-action@v7
+              with:
+                  file_pattern: 'assets/*.svg'
+                  commit_user_name: '${{ steps.config-bot.outputs.bot-name }}'
+                  commit_user_email: '${{ steps.config-bot.outputs.bot-email }}'
+                  commit_author: '${{ steps.config-bot.outputs.bot-name }} <${{ steps.config-bot.outputs.bot-email }}>'
+                  commit_message: 'Update dev stats cards'
+
+            - name: Amend existing cards
+              if: steps.check-cards.outputs.skip == 'false' && steps.check-cards.outputs.last-email == steps.config-bot.outputs.bot-email
+              uses: stefanzweifel/git-auto-commit-action@v7
+              with:
+                  file_pattern: 'assets/*.svg'
+                  commit_user_name: '${{ steps.config-bot.outputs.bot-name }}'
+                  commit_user_email: '${{ steps.config-bot.outputs.bot-email }}'
+                  commit_author: '${{ steps.config-bot.outputs.bot-name }} <${{ steps.config-bot.outputs.bot-email }}>'
+                  commit_message: 'Update dev stats cards'
+                  commit_options: '--amend --no-edit'
+                  push_options: '--force-with-lease'
+
+            - name: Update cards
+              if: steps.check-cards.outputs.skip == 'false'
+              run: |
+                  # Update dev stats cards outcome
+                  echo "🟢 All dev stats cards were updated and are now live!"
