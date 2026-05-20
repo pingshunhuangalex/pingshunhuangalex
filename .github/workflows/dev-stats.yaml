@@ -45,8 +45,6 @@ jobs:
 
                   BOT_NAME="${APP_SLUG}[bot]"
                   BOT_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
-
-                  echo "bot-name=${BOT_NAME}" >> "$GITHUB_OUTPUT"
                   echo "bot-email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
 
                   git config --global user.name "${BOT_NAME}"
@@ -77,45 +75,33 @@ jobs:
                   git add assets/*.svg
 
                   if git diff --cached --quiet; then
-                      git restore --staged .
-
                       echo "🟡 No profile changes were found."
                       echo "skip=true" >> "$GITHUB_OUTPUT"
                       echo "🟢 The existing dev stats cards are still valid. No changes were made."
                   else
-                      git restore --staged .
-
                       echo "skip=false" >> "$GITHUB_OUTPUT"
-                      echo "last-email=$(git log -1 --format='%ae')" >> "$GITHUB_OUTPUT" # Get the email of the last commit author
 
-                      if [ "${{ steps.check-cards.outputs.last-email }}" = "${{ steps.config-bot.outputs.bot-email }}" ]; then
-                          echo "🟣 Last commit was pushed by the dev cards generation bot. Amending..."
+                      LAST_EMAIL=$(git log -1 --format='%ae') # Get the email of the last commit author
+
+                      if [ "${LAST_EMAIL}" = "${{ steps.config-bot.outputs.bot-email }}" ]; then
+                          echo "🟣 Last commit was pushed by the dev cards generation bot. Rolling back remote and creating a new commit..."
+
+                          git reset --soft HEAD~1
+                          git push --force-with-lease origin HEAD
                       else
                           echo "🟣 Last commit was pushed by a user. Creating a new commit..."
                       fi
                   fi
 
             - name: Commit new cards
-              if: steps.check-cards.outputs.skip == 'false' && steps.check-cards.outputs.last-email != steps.config-bot.outputs.bot-email
-              uses: stefanzweifel/git-auto-commit-action@v7
+              if: steps.check-cards.outputs.skip == 'false'
+              uses: iarekylew00t/verified-bot-commit@v2
               with:
-                  file_pattern: 'assets/*.svg'
-                  commit_user_name: '${{ steps.config-bot.outputs.bot-name }}'
-                  commit_user_email: '${{ steps.config-bot.outputs.bot-email }}'
-                  commit_author: '${{ steps.config-bot.outputs.bot-name }} <${{ steps.config-bot.outputs.bot-email }}>'
-                  commit_message: 'Update dev stats cards'
-
-            - name: Amend existing cards
-              if: steps.check-cards.outputs.skip == 'false' && steps.check-cards.outputs.last-email == steps.config-bot.outputs.bot-email
-              uses: stefanzweifel/git-auto-commit-action@v7
-              with:
-                  file_pattern: 'assets/*.svg'
-                  commit_user_name: '${{ steps.config-bot.outputs.bot-name }}'
-                  commit_user_email: '${{ steps.config-bot.outputs.bot-email }}'
-                  commit_author: '${{ steps.config-bot.outputs.bot-name }} <${{ steps.config-bot.outputs.bot-email }}>'
-                  commit_message: 'Update dev stats cards'
-                  commit_options: '--amend --no-edit'
-                  push_options: '--force-with-lease'
+                  token: ${{ steps.app-token.outputs.token }}
+                  auto-stage: false
+                  message: 'Update dev stats cards'
+                  files: |
+                      assets/*.svg
 
             - name: Update cards
               if: steps.check-cards.outputs.skip == 'false'
