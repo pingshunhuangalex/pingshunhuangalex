@@ -30,7 +30,7 @@ Proven ability to combine vision, creativity and strong business acumen with wel
   <img alt="GitHub Stats" height="140px" src="./assets/stats.svg">
 </p>
 <p align="center" >
-  <img alt="GitHub Streak" height="140px" src="https://streak-stats.demolab.com/?user=pingshunhuangalex&hide_border=true&theme=nightowl">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img alt="GitHub Streak" height="140px" src="./assets/streak.svg">&nbsp;&nbsp;&nbsp;&nbsp;
   <img alt="GitHub Top Langs" height="140px" src="./assets/top-langs.svg">
 </p>
 

@@ -52,6 +52,45 @@ jobs:
 
                   echo "🟢 Bot ${BOT_NAME}<${BOT_EMAIL}> is ready!"
 
+            - name: Checkout GitHub streak stats source
+              uses: actions/checkout@v6
+              with:
+                  repository: 'DenverCoder1/github-readme-streak-stats'
+                  path: 'build'
+
+            - name: Setup PHP environment
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.5'
+                  extensions: mbstring, intl
+
+            - name: Generate GitHub streak card
+              run: |
+                  # Generate GitHub streak card in the built PHP environment
+                  echo "🟣 Installing dependencies..."
+
+                  cd build
+                  composer install --no-interaction --prefer-dist > /dev/null 2>&1
+                  echo "TOKEN=${{ steps.app-token.outputs.token }}" > .env
+
+                  echo "🟣 Spinning up PHP environment..."
+
+                  php -S localhost:8000 -t src/ > /dev/null 2>&1 &
+                  PHP_SERVER_PID=$!
+
+                  sleep 2
+
+                  echo "🟣 Building GitHub streak card..."
+
+                  curl --retry 3 --retry-delay 2 -s "http://localhost:8000/?user=${{ github.repository_owner }}&hide_border=true&theme=nightowl" -o ../assets/streak.svg
+
+                  echo "🟣 Cleaning up PHP environment..."
+
+                  kill $PHP_SERVER_PID
+                  rm -rf build
+
+                  echo "🟢 GitHub streak card was generated successfully!"
+
             - name: Generate GitHub stats card
               uses: readme-tools/github-readme-stats-action@v1
               with:
@@ -74,7 +113,7 @@ jobs:
                   # Check dev stats cards availability
                   git add assets/*.svg
 
-                  if git diff --cached --quiet; then
+                  if git diff --staged --quiet; then
                       echo "🟡 No profile changes were found."
                       echo "skip=true" >> "$GITHUB_OUTPUT"
                       echo "🟢 The existing dev stats cards are still valid. No changes were made."
@@ -106,5 +145,5 @@ jobs:
             - name: Update cards
               if: steps.check-cards.outputs.skip == 'false'
               run: |
-                  # Update dev stats cards outcome
+                  # Display dev stats cards update results
                   echo "🟢 All dev stats cards were updated and are now live!"
