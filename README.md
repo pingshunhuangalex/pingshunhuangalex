@@ -1,6 +1,6 @@
 ## Hi there 👋 Come to check my profile again? Make yourself at home 😘
 
-<img align="right" alt="Illustration" src="./assets/coding-and-building.png" height="275">
+<img align="right" alt="Illustration" src="./assets/coding-and-building.png" height="320">
 
 I'm [Pingshun Huang (Alex)](https://www.linkedin.com/in/pingshunhuangalex/), a creative and passionate frontend web developer and technology innovation professional with a great eye for design and interaction across all devices.
 
