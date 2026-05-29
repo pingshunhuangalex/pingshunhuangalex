@@ -9,7 +9,7 @@
         aria-labelledby="descId"
       >
         <title id="titleId">Pingshun Huang (Alex)'s GitHub Stats, Rank: B</title>
-        <desc id="descId">Total Stars Earned: 60, Total Commits  : 1063, Total PRs: 22, Total Issues: 216, Contributed to (last year): 7</desc>
+        <desc id="descId">Total Stars Earned: 60, Total Commits  : 1071, Total PRs: 22, Total Issues: 216, Contributed to (last year): 7</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -73,7 +73,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 132.42225896397034;
+        stroke-dashoffset: 132.31139111835756;
       }
     }
   
