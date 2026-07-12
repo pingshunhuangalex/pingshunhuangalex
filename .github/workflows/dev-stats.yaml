@@ -6,12 +6,8 @@ on:
     workflow_dispatch:
 
 jobs:
-    setup-bot:
+    generate-streak-card:
         runs-on: ubuntu-latest
-        outputs:
-            token: ${{ steps.app-token.outputs.token }}
-            bot-name: ${{ steps.get-bot-fingerprints.outputs.bot-name }}
-            bot-email: ${{ steps.get-bot-fingerprints.outputs.bot-email }}
         steps:
             - name: Generate bot token
               id: app-token
@@ -20,27 +16,6 @@ jobs:
                   client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
                   private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
 
-            - name: Get bot fingerprints
-              id: get-bot-fingerprints
-              env:
-                  GH_TOKEN: ${{ steps.app-token.outputs.token }}
-              run: |
-                  # Fetch bot identity via token
-                  APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
-                  BOT_ID=$(gh api "/users/${APP_SLUG}[bot]" --jq '.id')
-
-                  BOT_NAME="${APP_SLUG}[bot]"
-                  BOT_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
-
-                  echo "bot-name=${BOT_NAME}" >> "$GITHUB_OUTPUT"
-                  echo "bot-email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
-
-                  echo "🟢 Bot ${BOT_NAME}<${BOT_EMAIL}> is identified!"
-
-    generate-streak-card:
-        needs: [setup-bot]
-        runs-on: ubuntu-latest
-        steps:
             - name: Checkout GitHub streak stats source
               uses: actions/checkout@v6
               with:
@@ -60,7 +35,7 @@ jobs:
 
                   cd build
                   composer install --no-interaction --prefer-dist > /dev/null 2>&1
-                  echo "TOKEN=${{ needs.setup-bot.outputs.token }}" > .env
+                  echo "TOKEN=${{ steps.app-token.outputs.token }}" > .env
 
                   echo "🟣 Spinning up PHP environment..."
 
@@ -89,16 +64,22 @@ jobs:
                   path: assets/streak.svg
 
     generate-stats-card:
-        needs: [setup-bot]
         runs-on: ubuntu-latest
         steps:
+            - name: Generate bot token
+              id: app-token
+              uses: actions/create-github-app-token@v3
+              with:
+                  client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
+                  private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
+
             - name: Generate GitHub stats card
               uses: readme-tools/github-readme-stats-action@v1
               with:
                   card: stats
                   options: username=${{ github.repository_owner }}&hide_title=true&hide_border=true&show_icons=true&rank_icon=github&include_all_commits=true&count_private=true&line_height=22&theme=nightowl
                   path: assets/stats.svg
-                  token: ${{ needs.setup-bot.outputs.token }}
+                  token: ${{ steps.app-token.outputs.token }}
 
             - name: Upload stats artifact
               uses: actions/upload-artifact@v7
@@ -107,16 +88,22 @@ jobs:
                   path: assets/stats.svg
 
     generate-top-langs-card:
-        needs: [setup-bot]
         runs-on: ubuntu-latest
         steps:
+            - name: Generate bot token
+              id: app-token
+              uses: actions/create-github-app-token@v3
+              with:
+                  client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
+                  private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
+
             - name: Generate GitHub top languages card
               uses: readme-tools/github-readme-stats-action@v1
               with:
                   card: top-langs
                   options: username=${{ github.repository_owner }}&hide=html&hide_title=true&hide_border=true&layout=compact&langs_count=8&theme=nightowl
                   path: assets/top-langs.svg
-                  token: ${{ needs.setup-bot.outputs.token }}
+                  token: ${{ steps.app-token.outputs.token }}
 
             - name: Upload top languages artifact
               uses: actions/upload-artifact@v7
@@ -126,20 +113,39 @@ jobs:
 
     update-cards:
         needs:
-            [
-                setup-bot,
-                generate-streak-card,
-                generate-stats-card,
-                generate-top-langs-card,
-            ]
+            [generate-streak-card, generate-stats-card, generate-top-langs-card]
         runs-on: ubuntu-latest
         permissions:
             contents: write
         steps:
+            - name: Generate bot token
+              id: app-token
+              uses: actions/create-github-app-token@v3
+              with:
+                  client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
+                  private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
+
+            - name: Get bot fingerprints
+              id: get-bot-fingerprints
+              env:
+                  GH_TOKEN: ${{ steps.app-token.outputs.token }}
+              run: |
+                  # Fetch bot identity via token
+                  APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
+                  BOT_ID=$(gh api "/users/${APP_SLUG}[bot]" --jq '.id')
+
+                  BOT_NAME="${APP_SLUG}[bot]"
+                  BOT_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+
+                  echo "bot-name=${BOT_NAME}" >> "$GITHUB_OUTPUT"
+                  echo "bot-email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
+
+                  echo "🟢 Bot ${BOT_NAME}<${BOT_EMAIL}> is identified!"
+
             - name: Checkout code
               uses: actions/checkout@v6
               with:
-                  token: ${{ needs.setup-bot.outputs.token }}
+                  token: ${{ steps.app-token.outputs.token }}
                   fetch-depth: 0
 
             - name: Download streak artifact
@@ -164,8 +170,11 @@ jobs:
               id: check-cards
               run: |
                   # Set up Git for bot
-                  git config --global user.name "${{ needs.setup-bot.outputs.bot-name }}"
-                  git config --global user.email "${{ needs.setup-bot.outputs.bot-email }}"
+                  BOT_NAME="${{ steps.get-bot-fingerprints.outputs.bot-name }}"
+                  BOT_EMAIL="${{ steps.get-bot-fingerprints.outputs.bot-email }}"
+
+                  git config --global user.name "${BOT_NAME}"
+                  git config --global user.email "${BOT_EMAIL}"
 
                   # Check dev stats cards availability
                   git add assets/*.svg
@@ -179,7 +188,7 @@ jobs:
 
                       LAST_EMAIL=$(git log -1 --format='%ae') # Get the email of the last commit author
 
-                      if [ "${LAST_EMAIL}" = "${{ needs.setup-bot.outputs.bot-email }}" ]; then
+                      if [ "${LAST_EMAIL}" = "${BOT_EMAIL}" ]; then
                           echo "🟣 Last commit was pushed by the dev cards generation bot. Rolling back remote and creating a new commit..."
 
                           git reset --soft HEAD~1
@@ -193,7 +202,7 @@ jobs:
               if: steps.check-cards.outputs.skip == 'false'
               uses: iarekylew00t/verified-bot-commit@v2
               with:
-                  token: ${{ needs.setup-bot.outputs.token }}
+                  token: ${{ steps.app-token.outputs.token }}
                   auto-stage: false
                   message: 'Update dev stats cards'
                   files: |
