@@ -55,7 +55,7 @@ jobs:
                   cd ..
                   rm -rf build
 
-                  echo "🟢 GitHub streak card was generated successfully!"
+                  echo "🟢 GitHub streak card generated!"
 
             - name: Upload streak artifact
               uses: actions/upload-artifact@v7
@@ -140,7 +140,7 @@ jobs:
                   echo "bot-name=${BOT_NAME}" >> "$GITHUB_OUTPUT"
                   echo "bot-email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
 
-                  echo "🟢 Bot ${BOT_NAME}<${BOT_EMAIL}> is identified!"
+                  echo "🟢 Bot ${BOT_NAME}<${BOT_EMAIL}> identified!"
 
             - name: Checkout code
               uses: actions/checkout@v6
@@ -169,20 +169,13 @@ jobs:
             - name: Check cards
               id: check-cards
               run: |
-                  # Set up Git for bot
-                  BOT_NAME="${{ steps.get-bot-fingerprints.outputs.bot-name }}"
-                  BOT_EMAIL="${{ steps.get-bot-fingerprints.outputs.bot-email }}"
-
-                  git config --global user.name "${BOT_NAME}"
-                  git config --global user.email "${BOT_EMAIL}"
-
                   # Check dev stats cards availability
+                  BOT_EMAIL="${{ steps.get-bot-fingerprints.outputs.bot-email }}"
                   git add assets/*.svg
 
                   if git diff --staged --quiet; then
-                      echo "🟡 No profile changes were found."
                       echo "skip=true" >> "$GITHUB_OUTPUT"
-                      echo "🟢 The existing dev stats cards are still valid. No changes were made."
+                      echo "🟡 No profile changes found. The existing dev stats cards are still valid!"
                   else
                       echo "skip=false" >> "$GITHUB_OUTPUT"
 
@@ -212,4 +205,4 @@ jobs:
               if: steps.check-cards.outputs.skip == 'false'
               run: |
                   # Display dev stats cards update results
-                  echo "🟢 All dev stats cards were updated and are now live!"
+                  echo "🟢 All dev stats cards updated and are now live!"
