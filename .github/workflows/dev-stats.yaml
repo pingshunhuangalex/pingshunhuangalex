@@ -135,7 +135,7 @@ jobs:
                   BOT_ID=$(gh api "/users/${APP_SLUG}[bot]" --jq '.id')
 
                   BOT_NAME="${APP_SLUG}[bot]"
-                  BOT_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+                  BOT_EMAIL="${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com" # Grab bot info from https://api.github.com/users/sphs-actions[bot]
 
                   echo "bot-name=${BOT_NAME}" >> "$GITHUB_OUTPUT"
                   echo "bot-email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
