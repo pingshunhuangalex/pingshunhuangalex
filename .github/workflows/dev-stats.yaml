@@ -191,7 +191,7 @@ jobs:
                       fi
                   fi
 
-            - name: Commit new cards
+            - name: Update cards
               if: steps.check-cards.outputs.skip == 'false'
               uses: iarekylew00t/verified-bot-commit@v2
               with:
@@ -200,9 +200,3 @@ jobs:
                   message: 'Update dev stats cards'
                   files: |
                       assets/*.svg
-
-            - name: Update cards
-              if: steps.check-cards.outputs.skip == 'false'
-              run: |
-                  # Display dev stats cards update results
-                  echo "🟢 All dev stats cards updated and are now live!"
