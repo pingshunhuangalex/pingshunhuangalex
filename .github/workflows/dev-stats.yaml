@@ -197,6 +197,6 @@ jobs:
               with:
                   token: ${{ steps.app-token.outputs.token }}
                   auto-stage: false
-                  message: 'Update dev stats cards'
+                  message: 'Daily scan for dev stats card updates'
                   files: |
                       assets/*.svg
