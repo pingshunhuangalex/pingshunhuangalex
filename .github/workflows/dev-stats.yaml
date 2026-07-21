@@ -148,23 +148,11 @@ jobs:
                   token: ${{ steps.app-token.outputs.token }}
                   fetch-depth: 0
 
-            - name: Download streak artifact
+            - name: Download card artifacts
               uses: actions/download-artifact@v8
               with:
-                  name: streak-card
-                  path: assets
-
-            - name: Download stats artifact
-              uses: actions/download-artifact@v8
-              with:
-                  name: stats-card
-                  path: assets
-
-            - name: Download top languages artifact
-              uses: actions/download-artifact@v8
-              with:
-                  name: top-langs-card
-                  path: assets
+                  merge-multiple: true
+                  path: assets/
 
             - name: Check cards
               id: check-cards
