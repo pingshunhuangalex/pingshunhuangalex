@@ -15,6 +15,7 @@ jobs:
               with:
                   client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
                   private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
+                  owner: ${{ github.repository_owner }}
 
             - name: Checkout GitHub streak stats source
               uses: actions/checkout@v6
@@ -72,9 +73,10 @@ jobs:
               with:
                   client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
                   private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
+                  owner: ${{ github.repository_owner }}
 
             - name: Generate GitHub stats card
-              uses: readme-tools/github-readme-stats-action@v1
+              uses: stats-organization/github-readme-stats-action@v2
               with:
                   card: stats
                   options: username=${{ github.repository_owner }}&hide_title=true&hide_border=true&show_icons=true&rank_icon=github&include_all_commits=true&count_private=true&line_height=22&theme=nightowl
@@ -96,9 +98,10 @@ jobs:
               with:
                   client-id: ${{ vars.SPHS_ACTIONS_CLIENT_ID }}
                   private-key: ${{ secrets.SPHS_ACTIONS_PRIVATE_KEY }}
+                  owner: ${{ github.repository_owner }}
 
             - name: Generate GitHub top languages card
-              uses: readme-tools/github-readme-stats-action@v1
+              uses: stats-organization/github-readme-stats-action@v2
               with:
                   card: top-langs
                   options: username=${{ github.repository_owner }}&hide=html&hide_title=true&hide_border=true&layout=compact&langs_count=8&theme=nightowl
